@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:devbox_dart/manager.dart';
+import 'package:devbox_dart/src/manager.dart';
 
 import '../logger.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -21,7 +21,7 @@ class Plugin {
 
   Future<void> load() async {
     try {
-      Logger.instance.log("Running ${env ?? exec}", LogLevel.debug);
+      Logger.log("Running ${env ?? exec}", LogLevel.debug);
       var run = await Process.start(
           env ?? exec,
           env == null
@@ -29,13 +29,13 @@ class Plugin {
               : exec.split(" ").where((element) => element != "").toList(),
           mode: ProcessStartMode.inheritStdio,
           includeParentEnvironment: true,
-          environment: {"PATH": Manager.instance.portablePathVariable});
+          environment: {"PATH": Manager.instance.pathVar});
 
       int exitCode = await run.exitCode;
       // subscription.cancel();
-      Logger.instance.log("Exited with code $exitCode", LogLevel.debug);
+      Logger.log("Exited with code $exitCode", LogLevel.debug);
     } catch (e) {
-      Logger.instance.log("Plugin failed to load: $e", LogLevel.warning);
+      Logger.log("Plugin failed to load: $e", LogLevel.warning);
     }
   }
 

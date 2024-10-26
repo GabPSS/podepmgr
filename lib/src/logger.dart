@@ -5,11 +5,14 @@ class Logger {
 
   int level = 0; //-1 = silent
 
-  void log(String content, LogLevel level) {
+  void _log(String content, LogLevel level) {
     if (level.index >= this.level) {
       print("[${level.name.toUpperCase()}] $content");
     }
   }
+
+  static void log(String content, LogLevel level) =>
+      Logger.instance._log(content, level);
 }
 
 enum LogLevel { error, warning, debug }

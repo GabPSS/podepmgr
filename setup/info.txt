@@ -1,0 +1,22 @@
+INSTALLATION INSTRUCTIONS
+===========================
+
+Welcome to DevBox!
+
+DevBox is a program manager for portable development disks. It allows you to install and run your development tools in a controlled environment you can transport between computers via thumb drives or other external media.
+
+By default, a DevBox-configured drive follows the structure below (you can also make up your own):
+
+root/
+- assets/	-- images and other resources
+- bin/		-- programs and tools
+- plugins/	-- devbox plugins
+- src/		-- source code/your repos
+- boot.bat	-- devbox boot script
+
+Ideally, you should install DevBox on the bin/devbox folder. The program will automatically generate auxiliary configuration files for your install, and a boot.bat script for your convenience.
+
+Thank you for choosing DevBox!
+
+
+Please note: DevBox was not designed for running over the network.

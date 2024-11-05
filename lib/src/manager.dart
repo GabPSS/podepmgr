@@ -63,7 +63,7 @@ class Manager {
   String makeDefaultBootBatchScript(String execPath) => """@echo off
 title DevBox
 
-$execPath
+$execPath start
 pause
 """;
 }

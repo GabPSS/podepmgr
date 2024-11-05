@@ -4,11 +4,20 @@
 library;
 
 import 'dart:io';
+import 'package:devbox_dart/src/devbox_runner.dart';
 import 'package:devbox_dart/src/logger.dart';
 import 'package:devbox_dart/src/manager.dart';
 import 'package:devbox_dart/src/models/environment.dart';
 
 /// Default command line interface for accessing and managing DevBox
+/// interactively.
+///
+/// The goal of this class is not to manage every single thing about DevBox as a
+/// CLI application, but is to merely provide the interface for running it
+/// interactively, without any parameters.
+///
+/// For a quick function to run DevBox non-interactively, see
+/// [DevBoxRunner.runUnattended]
 ///
 /// To get started, in a fresh instance, call [main] to run through the basic
 /// script.
@@ -22,9 +31,8 @@ class DevBoxCLI {
       if (env != null) {
         await selectAndRunPlugins();
 
-        var exitCode = await env.run();
+        var exitCode = await DevBoxRunner.runEnvironment(env);
 
-        Logger.log("Process returned $exitCode", LogLevel.debug);
         print("Process completed, exiting...");
         exit(exitCode ?? -1);
       }
@@ -53,14 +61,9 @@ class DevBoxCLI {
 
   /// Allows the user to run a set of plugins
   Future<void> selectAndRunPlugins() async {
-    print("Available plugins:");
-    int index = 0;
-    for (var plugin in Manager.config.plugins) {
-      print("[${index++}] $plugin");
-    }
-
     int? input;
     do {
+      _displayPlugins();
       stdout.write("Select a plugin (enter to stop): ");
       var inputString = stdin.readLineSync();
       input = int.tryParse(inputString ?? "");
@@ -71,5 +74,13 @@ class DevBoxCLI {
         await Manager.config.plugins[input].load();
       }
     } while (input != null);
+  }
+
+  void _displayPlugins() {
+    print("Available plugins:");
+    int index = 0;
+    for (var plugin in Manager.config.plugins) {
+      print("[${index++}] $plugin");
+    }
   }
 }

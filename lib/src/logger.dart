@@ -3,10 +3,10 @@ class Logger {
   static final Logger _instance = Logger._();
   Logger._();
 
-  int level = 0; //-1 = silent
+  int level = 1; //-1 = silent
 
   void _log(String content, LogLevel level) {
-    if (level.index >= this.level) {
+    if (level.index <= this.level) {
       print("[${level.name.toUpperCase()}] $content");
     }
   }

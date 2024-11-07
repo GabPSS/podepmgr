@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:devbox_dart/src/consts.dart';
 import 'package:devbox_dart/src/logger.dart';
 
 import 'models/config.dart';
@@ -66,4 +67,22 @@ title DevBox
 $execPath start
 pause
 """;
+
+  static void printConfig() {
+    print("""DevBox configuration overview
+=============================
+
+Manager version: $managerVersion
+Installed at: [${config.rootPath}]""");
+
+    print("Available environments:");
+    for (int i = 0; i < config.environments.length; i++) {
+      print("[$i] ${config.environments[i].name}");
+    }
+
+    print("Available plugins:");
+    for (int i = 0; i < config.plugins.length; i++) {
+      print("[$i] ${config.plugins[i].name}");
+    }
+  }
 }

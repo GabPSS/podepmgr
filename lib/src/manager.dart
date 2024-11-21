@@ -85,4 +85,7 @@ Installed at: [${config.rootPath}]""");
       print("[$i] ${config.plugins[i].name}");
     }
   }
+
+  Future<void> _saveConfig() => config.saveConfig(configFilePath);
+  static Future<void> saveConfig() => instance._saveConfig();
 }

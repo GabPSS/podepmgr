@@ -1,10 +1,11 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:args/command_runner.dart';
+import 'package:devbox_dart/devbox_manager.dart';
 import 'package:devbox_dart/src/cli/devbox_cli.dart';
 import 'package:devbox_dart/src/devbox_runner.dart';
 import 'package:devbox_dart/src/logger.dart';
-import 'package:devbox_dart/src/manager.dart';
 
 Future<void> main(List<String> arguments) async {
   await Manager.init();
@@ -13,13 +14,14 @@ Future<void> main(List<String> arguments) async {
     ..addCommand(StartCommand())
     ..addCommand(InitCommand())
     ..addCommand(RunCommand())
-    ..addCommand(StatusCommand())
+    ..addCommand(ListCommand())
+    ..addCommand(AddEnvCommand())
     ..run(arguments);
 }
 
-class StatusCommand extends Command {
+class ListCommand extends Command {
   @override
-  final String name = "status";
+  final String name = "list";
   @override
   final String description = "Lists DevBox environments and plugins";
 
@@ -50,7 +52,7 @@ class RunCommand extends Command {
         envIndex < 0 ||
         envIndex >= Manager.config.environments.length) {
       print(
-          "Error: You must provide a valid environment. Run 'devbox status' to list available configurations.\nSee --help for details\n");
+          "Error: You must provide a valid environment. Run 'devbox list' to list available configurations.\nSee --help for details\n");
       return;
     }
 
@@ -99,5 +101,54 @@ class StartCommand extends Command {
       Logger.instance.level = 2;
     }
     await DevBoxCLI().main();
+  }
+}
+
+class AddEnvCommand extends Command {
+  @override
+  final String name = "addenv";
+
+  @override
+  final String description = "Adds a new environment to DevBox";
+
+  AddEnvCommand() {
+    argParser.addOption("name",
+        help: "The name of the environment", mandatory: true);
+    argParser.addOption("path",
+        help: "The path of the program to execute", mandatory: true);
+    argParser.addFlag("absolute",
+        help:
+            "Whether or not the provided path should be considered absolute. If it is specified in the system's PATH, then this flag should be set. Otherwise, avoid providing absolute paths, since they require manual updates after a change to the DevBox's root directory",
+        defaultsTo: false);
+    argParser.addOption("args",
+        help: "Command-line arguments provided when the environment is run",
+        defaultsTo: "");
+  }
+
+  @override
+  Future<void> run() async {
+    var args = argResults;
+    if (args != null) {
+      var nameOpt = args.option("name");
+      var pathOpt = args.option("path");
+      var argsOpt = args.option("args");
+      var absFlag = args.flag("absolute");
+      if (nameOpt != null && pathOpt != null && argsOpt != null) {
+        var env = Environment(
+          name: nameOpt,
+          absolute: absFlag,
+          path: pathOpt,
+          args: argsOpt,
+        );
+
+        await Manager.init();
+
+        Manager.config.environments.add(env);
+        Manager.saveConfig();
+      } else {
+        print("Invalid arguments provided!");
+        print(usage);
+      }
+    }
   }
 }

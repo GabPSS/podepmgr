@@ -26,16 +26,19 @@ class DevBoxCLI {
     print("Welcome to DevBox");
     print("==================");
     if (await Manager.init()) {
-      Environment? env = selectEnvironment();
+      Environment? env;
 
-      if (env != null) {
-        await selectAndRunPlugins();
+      do {
+        env = selectEnvironment();
 
-        var exitCode = await DevBoxRunner.runEnvironment(env);
+        if (env != null) {
+          await selectAndRunPlugins();
+          var exitCode = await DevBoxRunner.runEnvironment(env);
+          Logger.log("Environment exited with code: $exitCode", LogLevel.debug);
+        }
+      } while (env != null);
 
-        print("Process completed, exiting...");
-        exit(exitCode ?? -1);
-      }
+      print("Thanks for using DevBox!");
     } else {
       Logger.log("Failed to initialize DevBox. Exiting...", LogLevel.warning);
     }
@@ -45,6 +48,8 @@ class DevBoxCLI {
   Environment? selectEnvironment() {
     print("Available environments:");
     int index = 0;
+
+    print("[-1] Exit DevBox");
     for (var env in Manager.config.environments) {
       print("[${index++}] $env");
     }
@@ -54,9 +59,9 @@ class DevBoxCLI {
       stdout.write("Select an environment: ");
       var inputString = stdin.readLineSync();
       input = int.tryParse(inputString ?? "") ?? -1;
-    } while (input < 0 && input >= Manager.config.environments.length);
+    } while (input < -1 && input >= Manager.config.environments.length);
 
-    return Manager.config.environments[input];
+    return input != -1 ? Manager.config.environments[input] : null;
   }
 
   /// Allows the user to run a set of plugins

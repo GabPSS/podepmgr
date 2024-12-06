@@ -69,10 +69,7 @@
 <section class="desc markdown">
   <p>Generates a basic default configuration file containing references to
 Command Prompt and Notepad, and no plugins or custom paths.</p>
-<p>This method is invoked in two scenarios:</p>
-<ul>
-<li>When DevBox Manager attempts to initialize (see <a href="../../devbox_manager/Manager/init.html">Manager.init</a>), but couldn't load the configuration file.</li>
-</ul>
+<p>This method is invoked when DevBox Manager attempts to initialize (see <a href="../../devbox_manager/Manager/init.html">Manager.init</a>), but couldn't load the configuration file.</p>
 </section>
 
 
@@ -96,7 +93,7 @@ Command Prompt and Notepad, and no plugins or custom paths.</p>
       ],
       pluginsDir = p.join(Directory.current.path, defaultPluginsDir),
       rootPath = Directory.current.path,
-      paths = [],
+      paths = [p.join(Directory.current.path, defaultExecPath)],
       assetsDir = p.join(Directory.current.path, defaultAssetsDir);</code></pre>
 </section>
 

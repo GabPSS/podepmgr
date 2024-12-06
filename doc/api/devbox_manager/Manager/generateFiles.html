@@ -63,15 +63,19 @@
     <section class="multi-line-signature">
       
 
-<span class="returntype"><a href="https://api.dart.dev/stable/3.5.4/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
-<span class="name ">generateFiles</span>(<wbr><ol class="parameter-list single-line"> <li><span class="parameter" id="generateFiles-param-execPath"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.5.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">execPath</span>, [</span></li>
-<li><span class="parameter" id="generateFiles-param-skipFolderCreation"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.5.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">skipFolderCreation</span> = <span class="default-value">false</span></span></li>
-</ol>])
+<span class="returntype"><a href="https://api.dart.dev/stable/3.4.3/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">generateFiles</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="generateFiles-param-execPath"><span class="type-annotation"><a href="https://api.dart.dev/stable/3.4.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">execPath</span>, </span></li>
+<li><span class="parameter" id="generateFiles-param-skipFolderCreation">[<span class="type-annotation"><a href="https://api.dart.dev/stable/3.4.3/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">skipFolderCreation</span> = <span class="default-value">false</span>]</span></li>
+</ol>)
 
       
 
     </section>
     
+<section class="desc markdown">
+  <p>Generates the default directory structure and configuration for DevBox.</p>
+<p>This function creates the default directories provided by DevBox configuration by default. In order to skip this behavior, set <code>skipFolderCreation</code> to <code>true</code>.</p>
+</section>
 
 
     
@@ -83,7 +87,8 @@
       &quot;Initializing directory structure and configuration&quot;, LogLevel.debug);
 
   &#47;&#47;Create default config.json
-  _config = Config.makeDefault();
+  _config =
+      Platform.isWindows ? Config.makeDefault() : Config.makeDefaultUnix();
   await _config.saveConfig(configFilePath);
 
   if (!skipFolderCreation) {
@@ -93,10 +98,16 @@
     await Directory(Config.defaultSourceDir).create(recursive: true);
   }
 
-  &#47;&#47;Create default boot.bat
-  await File(&quot;boot.bat&quot;).writeAsString(
-      makeDefaultBootBatchScript(Platform.executable),
-      mode: FileMode.write);
+  &#47;&#47;Create default boot scripts
+  if (Platform.isWindows) {
+    await File(&quot;boot.bat&quot;).writeAsString(
+        createBootScript(Platform.executable),
+        mode: FileMode.write);
+  } else {
+    await File(&quot;boot.sh&quot;).writeAsString(
+        createBootScriptUnix(Platform.executable),
+        mode: FileMode.write);
+  }
 }</code></pre>
 </section>
 

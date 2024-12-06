@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:devbox_dart/src/manager.dart';
+import 'package:podepmgr/src/manager.dart';
 
 import '../logger.dart';
 import 'package:json_annotation/json_annotation.dart';

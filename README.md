@@ -1,4 +1,4 @@
-# pbdevbox
+# podepmgr
 
 **Portable development environment manager for Windows**
 
@@ -6,7 +6,7 @@ This project allows you to easily manage environments, PATH variables and more w
 
 Typically most IDEs and tools will not play nice with portable drives, since they all require you to manually set PATH variables whenever you plug your drive into a new system, or just flat out won't work at all, as is the case for some command line tools like `dart` or `flutter`.
 
-pbdevbox's goal is to make managing these environments easier: Set your PATH variables on a single place, add any dependencies or code that must be run on a new computer every time, and you're off to work.
+pbpodepmgr's goal is to make managing these environments easier: Set your PATH variables on a single place, add any dependencies or code that must be run on a new computer every time, and you're off to work.
 
 **As it stands, the project is currently only supported on Windows. Plans for porting over to linux are coming soon.**
 

@@ -1,29 +1,29 @@
-/// DevBox's default command line interface.
+/// podepmgr's default command line interface.
 ///
-/// This library contains only the [DevBoxCLI] class.
+/// This library contains only the [InteractiveCLI] class.
 library;
 
 import 'dart:io';
-import 'package:devbox_dart/src/devbox_runner.dart';
-import 'package:devbox_dart/src/logger.dart';
-import 'package:devbox_dart/src/manager.dart';
-import 'package:devbox_dart/src/models/environment.dart';
+import 'package:podepmgr/src/podepmgr_runner.dart';
+import 'package:podepmgr/src/logger.dart';
+import 'package:podepmgr/src/manager.dart';
+import 'package:podepmgr/src/models/environment.dart';
 
-/// Default command line interface for accessing and managing DevBox
+/// Default command line interface for accessing and managing podepmgr
 /// interactively.
 ///
-/// The goal of this class is not to manage every single thing about DevBox as a
+/// The goal of this class is not to manage every single thing about podepmgr as a
 /// CLI application, but is to merely provide the interface for running it
 /// interactively, without any parameters.
 ///
-/// For a quick function to run DevBox non-interactively, see
-/// [DevBoxRunner.runUnattended]
+/// For a quick function to run podepmgr non-interactively, see
+/// [PodepmgrRunner.runUnattended]
 ///
 /// To get started, in a fresh instance, call [main] to run through the basic
 /// script.
-class DevBoxCLI {
+class InteractiveCLI {
   Future<void> main() async {
-    print("Welcome to DevBox");
+    print("Welcome to podepmgr");
     print("==================");
     if (await Manager.init()) {
       Environment? env;
@@ -33,14 +33,14 @@ class DevBoxCLI {
 
         if (env != null) {
           await selectAndRunPlugins();
-          var exitCode = await DevBoxRunner.runEnvironment(env);
+          var exitCode = await PodepmgrRunner.runEnvironment(env);
           Logger.log("Environment exited with code: $exitCode", LogLevel.debug);
         }
       } while (env != null);
 
-      print("Thanks for using DevBox!");
+      print("Thanks for using podepmgr!");
     } else {
-      Logger.log("Failed to initialize DevBox. Exiting...", LogLevel.warning);
+      Logger.log("Failed to initialize podepmgr. Exiting...", LogLevel.warning);
     }
   }
 
@@ -49,7 +49,7 @@ class DevBoxCLI {
     print("Available environments:");
     int index = 0;
 
-    print("[-1] Exit DevBox");
+    print("[-1] Exit podepmgr");
     for (var env in Manager.config.environments) {
       print("[${index++}] $env");
     }

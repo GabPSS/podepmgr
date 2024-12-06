@@ -1,5 +1,5 @@
-name: devbox_dart
-description: dart version of the DevBox manager
+name: podepmgr
+description: dart version of the podepmgr manager
 version: 0.1.0
 
 environment:
@@ -8,6 +8,7 @@ environment:
 dependencies:
   args: ^2.6.0
   build_runner: ^2.4.11
+  dart_console: ^4.1.1
   json_annotation: ^4.9.0
   json_serializable: ^6.8.0
   path: ^1.9.0

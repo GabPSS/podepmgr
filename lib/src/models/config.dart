@@ -1,33 +1,30 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:devbox_dart/devbox_manager.dart';
-import 'package:devbox_dart/src/manager.dart';
+import 'package:podepmgr/podepmgr_manager.dart';
 
-import 'environment.dart';
 import '../logger.dart';
-import 'plugin.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:path/path.dart' as p;
 
 part 'config.g.dart';
 
-/// A class that defines essential DevBox configuration.
+/// A class that defines essential podepmgr configuration.
 ///
 /// This class defines the environments, plugins, path variables and default
-/// directories for the current DevBox installation. The configuration is stored
+/// directories for the current podepmgr installation. The configuration is stored
 /// by default as a JSON file in `(root)/config.json`, and can be modified by
 /// the user.
 ///
 /// Because of this, care should be taken when reading the file and attempting
 /// to run any programs.
 ///
-/// The path where DevBox starts is defined in [rootPath] and is by default the
+/// The path where podepmgr starts is defined in [rootPath] and is by default the
 /// root directory of a Windows partition with assigned drive letter.
 /// (typically T:\\)
 ///
 /// Path variables are defined in a basic string array. It is important that
-/// **all user-defined paths MUST be absolute**, since DevBox does not check for
+/// **all user-defined paths MUST be absolute**, since podepmgr does not check for
 /// any file or script's existence before adding it to the instance's PATH.
 ///
 /// See [Environment], [Plugin] for details on these items.
@@ -40,7 +37,7 @@ class Config {
   String pluginsDir = "";
   String assetsDir = "";
   static const String defaultBinDir = "bin";
-  static const String defaultExecPath = "bin\\devbox\\devbox";
+  static const String defaultExecPath = "bin\\podepmgr";
   static const String defaultSourceDir = "src";
   static const String defaultPluginsDir = "plugins";
   static const String defaultAssetsDir = "assets";
@@ -50,7 +47,7 @@ class Config {
   /// Generates a basic default configuration file containing references to
   /// Command Prompt and Notepad, and no plugins or custom paths.
   ///
-  /// This method is invoked when DevBox Manager attempts to initialize (see [Manager.init]), but couldn't load the configuration file.
+  /// This method is invoked when podepmgr Manager attempts to initialize (see [Manager.init]), but couldn't load the configuration file.
   Config.makeDefault()
       : environments = [
           Environment(

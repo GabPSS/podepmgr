@@ -1,15 +1,15 @@
 import 'dart:io';
-import 'package:devbox_dart/src/manager.dart';
-import 'package:devbox_dart/src/models/config.dart';
+import 'package:podepmgr/src/manager.dart';
+import 'package:podepmgr/src/models/config.dart';
 
 import '../logger.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'environment.g.dart';
 
-/// A class for defining and running a DevBox environment.
+/// A class for defining and running a podepmgr environment.
 ///
-/// An Environment in DevBox is a program, specified at [path], that the user
+/// An Environment in podepmgr is a program, specified at [path], that the user
 /// wishes to run portably. Environments can be IDEs, toolsets, or any other
 /// executable programs.
 ///
@@ -18,8 +18,8 @@ part 'environment.g.dart';
 /// reference relative to the working directory.
 ///
 /// When defining environments, the user should **always** set the [absolute]
-/// to false if the program is contained within [Config.defaultExecPath], so
-/// that moving DevBox to a different root direcotry is easier.
+/// to false if the program is contained within [Config.defaultBinDir], so
+/// that moving podepmgr to a different root direcotry is easier.
 ///
 /// [args] may be empty if the user does not wish to specify and command line
 /// arguments to be run while the environment is starting.

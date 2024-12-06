@@ -5,12 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "devbox_dart",
+            "name": "podepmgr",
             "request": "launch",
             "type": "dart",
-            "program": "bin\\devbox.dart",
+            "program": "bin\\podepmgr.dart",
             "console": "externalTerminal",
-            "args": ["start"]
+            "args": [
+                "start"
+            ]
         }
     ]
 }

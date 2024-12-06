@@ -1,5 +1,5 @@
 [Setup]
-AppName=DevBox
+AppName=Podepmgr
 AppVersion=0.1.0
 DefaultDirName=D:\
 AllowRootDirectory=yes
@@ -11,17 +11,17 @@ InfoBeforeFile=info.txt
 PrivilegesRequired=lowest
 
 [Components]
-Name: core; Description: "DevBox Manager"; Types: full compact custom; Flags: fixed
+Name: core; Description: "Podepmgr"; Types: full compact custom; Flags: fixed
 
 [Tasks]
 Name: driveicon; Description: "Assign drive name and icon";
-Name: firstinit; Description: "Initialize DevBox drive";
+Name: firstinit; Description: "Initialize podepmgr drive";
 
 [Files]
-Source: "..\bin\devbox.exe"; DestDir: "{app}\bin\devbox"; Components: core
-Source: "initsetup.bat"; DestDir: "{app}\bin\devbox"; Tasks: firstinit
-Source: "dboxlogo.ico"; DestDir: "{app}\bin\devbox"; Tasks: driveicon
+Source: "..\bin\podepmgr.exe"; DestDir: "{app}\bin\podepmgr"; Components: core
+Source: "initsetup.bat"; DestDir: "{app}\bin\podepmgr"; Tasks: firstinit
+Source: "podepmgr.ico"; DestDir: "{app}\bin\podepmgr"; Tasks: driveicon
 Source: "autorun.inf"; DestDir: "{app}"; Tasks: driveicon
 
 [Run]
-Filename: "{app}\bin\devbox\initsetup.bat"; Description: "Initialize DevBox"; Tasks: firstinit
+Filename: "{app}\bin\podepmgr\initsetup.bat"; Description: "Initialize podepmgr"; Tasks: firstinit

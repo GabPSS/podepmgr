@@ -1,28 +1,28 @@
-DEVBOX INFO AND SETUP TIPS
+podepmgr INFO AND SETUP TIPS
 ===========================
 
-Welcome to DevBox!
+Welcome to podepmgr!
 
-DevBox is a program manager for portable development disks. It allows you to install and run your development tools in a controlled environment you can transport between computers via thumb drives, external SSDs or other transitory media.
+podepmgr is a program manager for portable development disks. It allows you to install and run your development tools in a controlled environment you can transport between computers via thumb drives, external SSDs or other transitory media.
 
-By default, a DevBox-configured drive follows the structure below (you can also make up your own):
+By default, a podepmgr-configured drive follows the structure below (you can also make up your own):
 
 drive_root/
 - assets/       -- images and other resources
 - bin/          -- programs and tools
-- bin/devbox/   -- devbox binaries
-- plugins/      -- devbox plugins
+- bin/podepmgr/   -- podepmgr binaries
+- plugins/      -- podepmgr plugins
 - src/          -- source code/your repos
-- boot.bat      -- devbox boot script
+- boot.bat      -- podepmgr boot script
 
-If you choose to initialize your selected drive as a DevBox drive, this structure will be created automatically for you. You can change it later in the config.json file.
+If you choose to initialize your selected drive as a podepmgr drive, this structure will be created automatically for you. You can change it later in the config.json file.
 
-You can use the 'devbox' command to change settings, add environments and test your configuration. See 'devbox -h' for documentation on doing so.
+You can use the 'podepmgr' command to change settings, add environments and test your configuration. See 'podepmgr -h' for documentation on doing so.
 
-Thank you for choosing DevBox!
+Thank you for choosing podepmgr!
 
 
 INCOMPATIBILITY WITH PROPRIETARY SOFTWARE
 =========================================
 
-Some proprietary programs may contain, in their licenses, clauses that limit you from running their software in external drives and/or moving them between computers. Because of this, these programs should be avoided when using DevBox. Either install them manually on all computers you use (if the license permits you to do so), or seek alternatives you can use with DevBox. 
+Some proprietary programs may contain, in their licenses, clauses that limit you from running their software in external drives and/or moving them between computers. Because of this, these programs should be avoided when using podepmgr. Either install them manually on all computers you use (if the license permits you to do so), or seek alternatives you can use with podepmgr. 

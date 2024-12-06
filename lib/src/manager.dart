@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:devbox_dart/src/consts.dart';
-import 'package:devbox_dart/src/logger.dart';
+import 'package:podepmgr/src/consts.dart';
+import 'package:podepmgr/src/logger.dart';
 
 import 'models/config.dart';
 
-/// A class for orchestrating DevBox configuration
+/// A class for orchestrating podepmgr configuration
 class Manager {
   static Manager get instance => _instance;
   static final Manager _instance = Manager._();
@@ -14,19 +14,19 @@ class Manager {
   late Config _config;
   bool _initRun = false;
 
-  /// Sets the default path for DevBox's config file.
+  /// Sets the default path for podepmgr's config file.
   ///
   /// See [Config] for details.
   String configFilePath = "config.json";
 
-  /// Gets the current environment path variable prepended with custom paths provided by DevBox configuration.
+  /// Gets the current environment path variable prepended with custom paths provided by podepmgr configuration.
   String get pathVar {
     String separator = Platform.isWindows ? ';' : ':';
     return [_config.paths.join(separator), Platform.environment["PATH"]]
         .join(separator);
   }
 
-  /// Loads DevBox configuration for the first time.
+  /// Loads podepmgr configuration for the first time.
   static Future<bool> init() => Manager.instance._init();
   static Config get config => Manager.instance._config;
 
@@ -42,9 +42,9 @@ class Manager {
     }
   }
 
-  /// Generates the default directory structure and configuration for DevBox.
+  /// Generates the default directory structure and configuration for podepmgr.
   ///
-  /// This function creates the default directories provided by DevBox configuration by default. In order to skip this behavior, set [skipFolderCreation] to `true`.
+  /// This function creates the default directories provided by podepmgr configuration by default. In order to skip this behavior, set [skipFolderCreation] to `true`.
   Future<void> generateFiles(String execPath,
       [bool skipFolderCreation = false]) async {
     Logger.log(
@@ -74,28 +74,28 @@ class Manager {
     }
   }
 
-  /// Generates the text content of DevBox's default boot script on Windows.
+  /// Generates the text content of podepmgr's default boot script on Windows.
   ///
   /// By default, this script is created when [generateFiles] is called, during
-  /// DevBox's first-time setup procedure.
+  /// podepmgr's first-time setup procedure.
   String createBootScript(String execPath) => """@echo off
-title DevBox
+title podepmgr
 
 $execPath start
 pause
 """;
 
-  /// Generates the text content of DevBox's default boot script on Unix systems.
+  /// Generates the text content of podepmgr's default boot script on Unix systems.
   ///
   /// By default, this script is created when [generateFiles] is called, during
-  /// DevBox's first-time setup procedure.
+  /// podepmgr's first-time setup procedure.
   String createBootScriptUnix(String execPath) => """#!/bin/bash
   $execPath start
   exit""";
 
-  /// Prints an overview of the current DevBox configuration.
+  /// Prints an overview of the current podepmgr configuration.
   static void printConfig() {
-    print("""DevBox configuration overview
+    print("""podepmgr configuration overview
 =============================
 
 Manager version: $managerVersion

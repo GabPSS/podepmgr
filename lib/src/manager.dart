@@ -17,8 +17,10 @@ class Manager {
   ///
   /// See [Config] for details.
   String configFilePath = "config.json";
-  String get pathVar =>
-      [_config.paths.join(';'), Platform.environment["PATH"]].join(';');
+  String get pathVar {
+    String separator = Platform.isWindows ? ';' : ':';
+    return [_config.paths.join(separator), Platform.environment["PATH"]].join(separator);
+  }
 
   static Future<bool> init() => Manager.instance._init();
   static Config get config => Manager.instance._config;

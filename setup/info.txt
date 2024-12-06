@@ -1,22 +1,28 @@
-INSTALLATION INSTRUCTIONS
+DEVBOX INFO AND SETUP TIPS
 ===========================
 
 Welcome to DevBox!
 
-DevBox is a program manager for portable development disks. It allows you to install and run your development tools in a controlled environment you can transport between computers via thumb drives or other external media.
+DevBox is a program manager for portable development disks. It allows you to install and run your development tools in a controlled environment you can transport between computers via thumb drives, external SSDs or other transitory media.
 
 By default, a DevBox-configured drive follows the structure below (you can also make up your own):
 
-root/
-- assets/	-- images and other resources
-- bin/		-- programs and tools
-- plugins/	-- devbox plugins
-- src/		-- source code/your repos
-- boot.bat	-- devbox boot script
+drive_root/
+- assets/       -- images and other resources
+- bin/          -- programs and tools
+- bin/devbox/   -- devbox binaries
+- plugins/      -- devbox plugins
+- src/          -- source code/your repos
+- boot.bat      -- devbox boot script
 
-Ideally, you should install DevBox on the bin/devbox folder. The program will automatically generate auxiliary configuration files for your install, and a boot.bat script for your convenience.
+If you choose to initialize your selected drive as a DevBox drive, this structure will be created automatically for you. You can change it later in the config.json file.
+
+You can use the 'devbox' command to change settings, add environments and test your configuration. See 'devbox -h' for documentation on doing so.
 
 Thank you for choosing DevBox!
 
 
-Please note: DevBox was not designed for running over the network.
+INCOMPATIBILITY WITH PROPRIETARY SOFTWARE
+=========================================
+
+Some proprietary programs may contain, in their licenses, clauses that limit you from running their software in external drives and/or moving them between computers. Because of this, these programs should be avoided when using DevBox. Either install them manually on all computers you use (if the license permits you to do so), or seek alternatives you can use with DevBox. 

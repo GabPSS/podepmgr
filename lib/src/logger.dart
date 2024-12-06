@@ -1,3 +1,4 @@
+/// A class that logs messages to the console according to priority.
 class Logger {
   static Logger get instance => _instance;
   static final Logger _instance = Logger._();

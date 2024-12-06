@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:devbox_dart/devbox_manager.dart';
 import 'package:devbox_dart/src/manager.dart';
 
 import 'environment.dart';
@@ -49,9 +50,7 @@ class Config {
   /// Generates a basic default configuration file containing references to
   /// Command Prompt and Notepad, and no plugins or custom paths.
   ///
-  /// This method is invoked in two scenarios:
-  ///
-  /// - When DevBox Manager attempts to initialize (see [Manager.init]), but couldn't load the configuration file.
+  /// This method is invoked when DevBox Manager attempts to initialize (see [Manager.init]), but couldn't load the configuration file.
   Config.makeDefault()
       : environments = [
           Environment(
@@ -69,7 +68,31 @@ class Config {
         ],
         pluginsDir = p.join(Directory.current.path, defaultPluginsDir),
         rootPath = Directory.current.path,
-        paths = [],
+        paths = [p.join(Directory.current.path, defaultExecPath)],
+        assetsDir = p.join(Directory.current.path, defaultAssetsDir);
+
+  /// Generates a basic default configuration file for Unix systems containing references to
+  /// Bash and Nano, and no plugins or custom paths.
+  ///
+  /// See [makeDefault] for more details.
+  Config.makeDefaultUnix()
+      : environments = [
+          Environment(
+            name: "Bash",
+            absolute: true,
+            path: "bash",
+            args: "",
+          ),
+          Environment(
+            name: "Nano",
+            absolute: true,
+            path: "nano",
+            args: "",
+          ),
+        ],
+        pluginsDir = p.join(Directory.current.path, defaultPluginsDir),
+        rootPath = Directory.current.path,
+        paths = [p.join(Directory.current.path, defaultExecPath)],
         assetsDir = p.join(Directory.current.path, defaultAssetsDir);
 
   /// Reads the configuration file specified at [configFilePath] and parses the

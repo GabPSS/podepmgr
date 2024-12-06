@@ -5,6 +5,7 @@ import 'package:devbox_dart/src/logger.dart';
 
 import 'models/config.dart';
 
+/// A class for orchestrating DevBox configuration
 class Manager {
   static Manager get instance => _instance;
   static final Manager _instance = Manager._();
@@ -17,11 +18,15 @@ class Manager {
   ///
   /// See [Config] for details.
   String configFilePath = "config.json";
+
+  /// Gets the current environment path variable prepended with custom paths provided by DevBox configuration.
   String get pathVar {
     String separator = Platform.isWindows ? ';' : ':';
-    return [_config.paths.join(separator), Platform.environment["PATH"]].join(separator);
+    return [_config.paths.join(separator), Platform.environment["PATH"]]
+        .join(separator);
   }
 
+  /// Loads DevBox configuration for the first time.
   static Future<bool> init() => Manager.instance._init();
   static Config get config => Manager.instance._config;
 
@@ -37,13 +42,17 @@ class Manager {
     }
   }
 
+  /// Generates the default directory structure and configuration for DevBox.
+  ///
+  /// This function creates the default directories provided by DevBox configuration by default. In order to skip this behavior, set [skipFolderCreation] to `true`.
   Future<void> generateFiles(String execPath,
       [bool skipFolderCreation = false]) async {
     Logger.log(
         "Initializing directory structure and configuration", LogLevel.debug);
 
     //Create default config.json
-    _config = Config.makeDefault();
+    _config =
+        Platform.isWindows ? Config.makeDefault() : Config.makeDefaultUnix();
     await _config.saveConfig(configFilePath);
 
     if (!skipFolderCreation) {
@@ -53,23 +62,38 @@ class Manager {
       await Directory(Config.defaultSourceDir).create(recursive: true);
     }
 
-    //Create default boot.bat
-    await File("boot.bat").writeAsString(
-        makeDefaultBootBatchScript(Platform.executable),
-        mode: FileMode.write);
+    //Create default boot scripts
+    if (Platform.isWindows) {
+      await File("boot.bat").writeAsString(
+          createBootScript(Platform.executable),
+          mode: FileMode.write);
+    } else {
+      await File("boot.sh").writeAsString(
+          createBootScriptUnix(Platform.executable),
+          mode: FileMode.write);
+    }
   }
 
   /// Generates the text content of DevBox's default boot script on Windows.
   ///
   /// By default, this script is created when [generateFiles] is called, during
   /// DevBox's first-time setup procedure.
-  String makeDefaultBootBatchScript(String execPath) => """@echo off
+  String createBootScript(String execPath) => """@echo off
 title DevBox
 
 $execPath start
 pause
 """;
 
+  /// Generates the text content of DevBox's default boot script on Unix systems.
+  ///
+  /// By default, this script is created when [generateFiles] is called, during
+  /// DevBox's first-time setup procedure.
+  String createBootScriptUnix(String execPath) => """#!/bin/bash
+  $execPath start
+  exit""";
+
+  /// Prints an overview of the current DevBox configuration.
   static void printConfig() {
     print("""DevBox configuration overview
 =============================

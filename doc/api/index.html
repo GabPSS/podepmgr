@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="devbox_dart API docs, for the Dart programming language.">
+  <title>devbox_dart - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">devbox_dart package</li>
+  </ol>
+  <div class="self-name">devbox_dart</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button" title="Toggle brightness">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        dark_mode
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        light_mode
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="pbdevbox">pbdevbox</h1>
+<p><strong>Portable development environment manager for Windows</strong></p>
+<p>This project allows you to easily manage environments, PATH variables and more when creating portable drives for software development.</p>
+<p>Typically most IDEs and tools will not play nice with portable drives, since they all require you to manually set PATH variables whenever you plug your drive into a new system, or just flat out won't work at all, as is the case for some command line tools like <code>dart</code> or <code>flutter</code>.</p>
+<p>pbdevbox's goal is to make managing these environments easier: Set your PATH variables on a single place, add any dependencies or code that must be run on a new computer every time, and you're off to work.</p>
+<p><strong>As it stands, the project is currently only supported on Windows. Plans for porting over to linux are coming soon.</strong></p>
+<h1 id="usage">Usage</h1>
+<p><em><strong>PLEASE NOTE</strong></em>: <em>This procedure is temporary. Work is underway to create a better alternative to manage environments</em></p>
+<ol>
+<li>Download the repo and copy the files into a new drive assigned with the letter "T:"</li>
+<li>Create a <code>bin\</code> folder if it doesn't already exist</li>
+<li>Install any tools and IDEs inside the <code>bin\</code> folder. <em>Make sure their licenses are OK with you doing this!</em></li>
+<li>Update <code>environments.json</code> to add which programs you can pick to launch from your drive</li>
+<li>Update <code>path.env</code> to add the directories of any missing programs the environment tries to launch</li>
+<li>If you find that your environment doesn't work when in portable mode, and running a command every time on a new machine fixes the problem, you can try writing a <strong>module</strong>:
+<ol>
+<li>Write a python script containing the code to run and any questions to present yourself when starting the module</li>
+<li>Save it under the <code>modules\</code> folder</li>
+<li>Update <code>modules.json</code> with a name and the name of the python script you've just created</li>
+<li>Try again with the new module installed</li>
+</ol>
+</li>
+</ol>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="devbox_manager">
+  <span class="name"><a href="devbox_manager/devbox_manager-library.html">devbox_manager</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">devbox_dart package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">devbox_dart</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="devbox_manager/devbox_manager-library.html">devbox_manager</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    devbox_dart
+      0.1.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

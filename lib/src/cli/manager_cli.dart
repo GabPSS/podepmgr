@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dart_console/dart_console.dart';
-import 'package:path/path.dart';
 import 'package:podepmgr/podepmgr_manager.dart';
 
 /// A class that provides a command line interface for editing podepmgr configuration.
@@ -16,7 +15,7 @@ class ManagerCLI {
     con.clearScreen();
 
     con.writeLine("Welcome to podepmgr");
-    con.writeLine("==================");
+    con.writeLine("===================");
     if (await Manager.init()) {
       var exit = false;
       do {
@@ -30,15 +29,15 @@ class ManagerCLI {
         switch (input) {
           case "e":
           case "E":
-            manageEnvironments(con);
+            _manageEnvironments(con);
             break;
           case "s":
           case "S":
-            managePlugins(con);
+            _managePlugins(con);
             break;
           case "p":
           case "P":
-            editPaths(con);
+            await _editPaths(con);
             break;
           case "q":
           case "Q":
@@ -58,10 +57,7 @@ class ManagerCLI {
     }
   }
 
-  /// A submenu for editing environments.
-  ///
-  /// Asks first if the user wants to add, remove or edit an environment. Then, asks for the index of the environment to edit (if applicable) after listing the available environments.
-  void manageEnvironments(Console con) {
+  void _manageEnvironments(Console con) {
     con.clearScreen();
     String? input;
     do {
@@ -82,15 +78,15 @@ class ManagerCLI {
       switch (input) {
         case "a":
         case "A":
-          addEnvironment(con);
+          _addEnvironment(con);
           break;
         case "r":
         case "R":
-          removeEnvironment(con);
+          _removeEnvironment(con);
           break;
         case "e":
         case "E":
-          editEnvironment(con);
+          _editEnvironment(con);
           break;
         case "x":
         case "X":
@@ -99,7 +95,7 @@ class ManagerCLI {
     } while (input != "x");
   }
 
-  void addEnvironment(Console con) {
+  void _addEnvironment(Console con) {
     con.write("Enter the name of the environment: ");
     String? name = con.readLine() ?? "Unnamed environment";
     con.write("Enter the path to the environment: ");
@@ -121,7 +117,7 @@ class ManagerCLI {
     con.clearScreen();
   }
 
-  void removeEnvironment(Console con) {
+  void _removeEnvironment(Console con) {
     con.write("Enter the index of the environment to remove: ");
     var index = int.tryParse(con.readLine() ?? "");
     if (index == null ||
@@ -137,7 +133,7 @@ class ManagerCLI {
     con.clearScreen();
   }
 
-  void editEnvironment(Console con) {
+  void _editEnvironment(Console con) {
     con.write("Enter the index of the environment to edit: ");
     var index = int.tryParse(con.readLine() ?? "");
     if (index == null ||
@@ -173,7 +169,149 @@ class ManagerCLI {
     con.clearScreen();
   }
 
-  void managePlugins(Console con) {}
+  void _managePlugins(Console con) {
+    con.clearScreen();
+    String? input;
+    do {
+      con.writeLine("Available plugins:");
+      int index = 0;
 
-  void editPaths(Console con) {}
+      for (var plugin in Manager.config.plugins) {
+        con.writeLine("[${index++}] $plugin");
+      }
+
+      con.writeLine("a. Add plugin");
+      con.writeLine("r. Remove plugin");
+      con.writeLine("e. Edit plugin");
+      con.writeLine("x. Back to main menu");
+
+      con.write("Select an option: ");
+      input = con.readLine();
+      switch (input) {
+        case "a":
+        case "A":
+          _addPlugin(con);
+          break;
+        case "r":
+        case "R":
+          _removePlugin(con);
+          break;
+        case "e":
+        case "E":
+          _editPlugin(con);
+          break;
+        case "x":
+        case "X":
+          break;
+      }
+    } while (input != "x");
+  }
+
+  void _addPlugin(Console con) {
+    con.write("Enter the name of the plugin: ");
+    String? name = con.readLine() ?? "Unnamed plugin";
+    con.write("Enter the path to the script or environment: ");
+    var env = con.readLine();
+    if (env == null) {
+      con.writeLine("Error: Path cannot be empty.");
+      return;
+    }
+    con.write(
+        "Enter the path to the script (if an environment was specified): ");
+    var exec = con.readLine();
+
+    Manager.config.plugins.add(Plugin(name: name, env: env, exec: exec ?? ""));
+    con.writeLine("Plugin '$name' added successfully.");
+    con.write("Press any key to continue...");
+    con.readKey();
+    con.clearScreen();
+  }
+
+  void _removePlugin(Console con) {
+    con.write("Enter the index of the plugin to remove: ");
+    var index = int.tryParse(con.readLine() ?? "");
+    if (index == null || index < 0 || index >= Manager.config.plugins.length) {
+      con.writeLine("Error: Invalid index.");
+      return;
+    }
+    var plugin = Manager.config.plugins.removeAt(index);
+    con.writeLine("Plugin '$plugin' removed successfully.");
+    con.write("Press any key to continue...");
+    con.readKey();
+    con.clearScreen();
+  }
+
+  void _editPlugin(Console con) {
+    con.write("Enter the index of the plugin to edit: ");
+    var index = int.tryParse(con.readLine() ?? "");
+    if (index == null || index < 0 || index >= Manager.config.plugins.length) {
+      con.writeLine("Error: Invalid index.");
+      return;
+    }
+    var plugin = Manager.config.plugins[index];
+
+    con.writeLine("Editing plugin: $plugin");
+    con.write("Enter the new name of the plugin [${plugin.name}]: ");
+    var name = con.readLine();
+    con.write(
+        "Enter the new path to the script or environment [${plugin.env}]: ");
+    var env = con.readLine();
+    con.write("Enter the new path to the script [${plugin.exec}]: ");
+    var exec = con.readLine();
+
+    Plugin newPlugin = Plugin(
+        name: name == null || name.isEmpty ? plugin.name : name,
+        env: env == null || env.isEmpty ? plugin.env : env,
+        exec: exec == null || exec.isEmpty ? plugin.exec : exec);
+
+    Manager.config.plugins[index] = newPlugin;
+
+    con.writeLine("Plugin '$plugin' edited successfully.");
+    con.write("Press any key to continue...");
+    con.readKey();
+    con.clearScreen();
+  }
+
+  Future<void> _editPaths(Console con) async {
+    con.clearScreen();
+    con.writeLine("Current paths:");
+    for (var path in Manager.config.paths) {
+      con.writeLine("\"$path\"");
+    }
+
+    con.writeLine("Exporting to paths.env...");
+
+    var file = File("paths.env");
+    await file.writeAsString(_createPathsFileContent(), mode: FileMode.write);
+
+    con.writeLine("Launching path editor...");
+
+    if (Platform.isWindows) {
+      await Process.run("notepad", [file.path]);
+    } else {
+      await Process.run("nano", [file.path]);
+    }
+
+    con.writeLine("Reading new paths...");
+
+    var newPaths = await file.readAsLines();
+
+    Manager.config.paths =
+        newPaths.where((path) => !path.startsWith("#")).toList();
+    file.delete();
+
+    con.writeLine("Paths updated successfully.");
+    con.write("Press any key to continue...");
+    con.readKey();
+    con.clearScreen();
+  }
+
+  String _createPathsFileContent() => [
+        "# podepmgr custom paths",
+        "# =====================",
+        "# This is a temporary file created for you to easily edit podepmgr paths. Lines starting with '#' will not be saved",
+        "# Enter any custom paths below, remembering to keep them absolute!",
+        "# Example: 'D:\\bin\\MyProgram' on Windows, and '/path/to/MyProgram' on *nix.",
+        ...Manager.config.paths
+      ].join(Platform.lineTerminator);
 }

@@ -24,7 +24,7 @@ import 'package:podepmgr/src/models/environment.dart';
 class InteractiveCLI {
   Future<void> main() async {
     print("Welcome to podepmgr");
-    print("==================");
+    print("===================");
     if (await Manager.init()) {
       Environment? env;
 

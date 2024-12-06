@@ -16,6 +16,7 @@ Future<void> main(List<String> arguments) async {
     ..addCommand(RunCommand())
     ..addCommand(ListCommand())
     ..addCommand(AddEnvCommand())
+    ..addCommand(AddPluginCommand())
     ..run(arguments);
 }
 
@@ -144,6 +145,50 @@ class AddEnvCommand extends Command {
         await Manager.init();
 
         Manager.config.environments.add(env);
+        Manager.saveConfig();
+      } else {
+        print("Invalid arguments provided!");
+        print(usage);
+      }
+    }
+  }
+}
+
+class AddPluginCommand extends Command {
+  @override
+  final String name = "addplugin";
+
+  @override
+  final String description = "Adds a new plugin to DevBox";
+
+  AddPluginCommand() {
+    argParser.addOption("name",
+        help: "The name of the plugin", mandatory: true);
+    argParser.addOption("env",
+        help:
+            "The path of the script file or environment where the script is run",
+        mandatory: true);
+    argParser.addOption("exec",
+        help: "The path of the script file, if an environment was specified",
+        defaultsTo: "");
+  }
+
+  @override
+  FutureOr? run() {
+    var args = argResults;
+    if (args != null) {
+      var nameOpt = args.option("name");
+      var envOpt = args.option("env");
+      var execOpt = args.option("exec");
+
+      if (nameOpt != null && envOpt != null) {
+        var plugin = Plugin(
+          name: nameOpt,
+          env: envOpt,
+          exec: execOpt ?? "",
+        );
+
+        Manager.config.plugins.add(plugin);
         Manager.saveConfig();
       } else {
         print("Invalid arguments provided!");

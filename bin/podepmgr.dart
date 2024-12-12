@@ -7,7 +7,7 @@ import 'package:dart_console/dart_console.dart';
 import 'package:podepmgr/podepmgr_manager.dart';
 import 'package:podepmgr/src/cli/interactive_cli.dart';
 import 'package:podepmgr/src/cli/manager_cli.dart';
-import 'package:podepmgr/src/podepmgr_runner.dart';
+import 'package:podepmgr/src/runner.dart';
 import 'package:podepmgr/src/logger.dart';
 
 Future<void> main(List<String> arguments) async {
@@ -123,7 +123,7 @@ class StartCommand extends Command {
 
     var env = Manager.config.environments[envIndex];
 
-    await PodepmgrRunner.runUnattended(env, plugins);
+    await Runner.runUnattended(env, plugins);
   }
 }
 
@@ -136,6 +136,17 @@ class EditCommand extends Command {
   @override
   final String description = "Launch UI for editing podepmgr configuration";
 
+  EditCommand() {
+    argParser.addFlag("verbose",
+        abbr: 'v', help: "Enable verbose logging", negatable: false);
+  }
+
   @override
-  Future<void> run() => ManagerCLI().main();
+  Future<void> run() async {
+    if (argResults?.flag("verbose") ?? false) {
+      Logger.instance.level = 2;
+    }
+
+    await ManagerCLI().main();
+  }
 }

@@ -36,6 +36,7 @@ class Config {
   String rootPath = "";
   String pluginsDir = "";
   String assetsDir = "";
+  String textEditor = "";
   static const String defaultBinDir = "bin";
   static const String defaultExecPath = "bin\\podepmgr";
   static const String defaultSourceDir = "src";
@@ -55,17 +56,20 @@ class Config {
             absolute: true,
             path: "cmd",
             args: "",
+            requiredPlugins: [],
           ),
           Environment(
             name: "Notepad",
             absolute: true,
             path: "notepad",
             args: "",
+            requiredPlugins: [],
           ),
         ],
         pluginsDir = p.join(Directory.current.path, defaultPluginsDir),
         rootPath = Directory.current.path,
         paths = [p.join(Directory.current.path, defaultExecPath)],
+        textEditor = "notepad",
         assetsDir = p.join(Directory.current.path, defaultAssetsDir);
 
   /// Generates a basic default configuration file for Unix systems containing references to
@@ -79,17 +83,20 @@ class Config {
             absolute: true,
             path: "bash",
             args: "",
+            requiredPlugins: [],
           ),
           Environment(
             name: "Nano",
             absolute: true,
             path: "nano",
             args: "",
+            requiredPlugins: [],
           ),
         ],
         pluginsDir = p.join(Directory.current.path, defaultPluginsDir),
         rootPath = Directory.current.path,
         paths = [p.join(Directory.current.path, defaultExecPath)],
+        textEditor = "nano",
         assetsDir = p.join(Directory.current.path, defaultAssetsDir);
 
   /// Reads the configuration file specified at [configFilePath] and parses the

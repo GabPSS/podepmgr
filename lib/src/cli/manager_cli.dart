@@ -109,8 +109,25 @@ class ManagerCLI {
     con.write("Enter any command line arguments: ");
     var args = con.readLine();
 
+    con.writeLine("Plguins available:");
+    for (int i = 0; i < Manager.config.plugins.length; i++) {
+      con.writeLine("[$i] ${Manager.config.plugins[i].name}");
+    }
+    con.write("Select any required plugins (comma separated): ");
+    List<int> pluginIndices = con
+            .readLine()
+            ?.split(",")
+            .map((p) => int.tryParse(p) ?? -1)
+            .where((p) => p >= 0 && p < Manager.config.plugins.length)
+            .toList() ??
+        [];
+
     Manager.config.environments.add(Environment(
-        name: name, path: path, absolute: absolute, args: args ?? ""));
+        name: name,
+        path: path,
+        absolute: absolute,
+        args: args ?? "",
+        requiredPlugins: pluginIndices));
     con.writeLine("Environment '$name' added successfully.");
     con.write("Press any key to continue...");
     con.readKey();
@@ -150,15 +167,35 @@ class ManagerCLI {
     con.write("Enter the new path to the environment [${env.path}]: ");
     var path = con.readLine();
     con.write("Is the path absolute? (y/n) [${env.absolute}]: ");
-    var absolute =
-        (con.readLine()?.toLowerCase() ?? (env.absolute ? "y" : "n")) == "y";
+    var absInput = con.readLine()?.toLowerCase();
+    bool absolute = absInput != null && absInput.isNotEmpty
+        ? absInput == "y"
+        : env.absolute;
     con.write("Enter any command line arguments [${env.args.join(" ")}]: ");
     var args = con.readLine();
+
+    con.writeLine("Plguins available:");
+    for (int i = 0; i < Manager.config.plugins.length; i++) {
+      con.writeLine("[$i] ${Manager.config.plugins[i].name}");
+    }
+    con.write(
+        "Select any required plugins (comma separated) [${env.requiredPlugins.join(",")}]: ");
+    List<int> pluginIndices = con
+            .readLine()
+            ?.split(",")
+            .map((p) => int.tryParse(p) ?? -1)
+            .where((p) => p >= 0 && p < Manager.config.plugins.length)
+            .toList() ??
+        [];
+    if (pluginIndices.isEmpty) {
+      pluginIndices = env.requiredPlugins;
+    }
 
     Environment newEnv = Environment(
         name: name == null || name.isEmpty ? env.name : name,
         path: path == null || path.isEmpty ? env.path : path,
         absolute: absolute,
+        requiredPlugins: pluginIndices,
         args: args == null || args.isEmpty ? env.args.join(" ") : args);
 
     Manager.config.environments[index] = newEnv;
@@ -235,6 +272,9 @@ class ManagerCLI {
       return;
     }
     var plugin = Manager.config.plugins.removeAt(index);
+    for (var env in Manager.config.environments) {
+      env.shiftPlugin(index);
+    }
     con.writeLine("Plugin '$plugin' removed successfully.");
     con.write("Press any key to continue...");
     con.readKey();

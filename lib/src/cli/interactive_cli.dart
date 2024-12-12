@@ -4,7 +4,7 @@
 library;
 
 import 'dart:io';
-import 'package:podepmgr/src/podepmgr_runner.dart';
+import 'package:podepmgr/src/runner.dart';
 import 'package:podepmgr/src/logger.dart';
 import 'package:podepmgr/src/manager.dart';
 import 'package:podepmgr/src/models/environment.dart';
@@ -17,7 +17,7 @@ import 'package:podepmgr/src/models/environment.dart';
 /// interactively, without any parameters.
 ///
 /// For a quick function to run podepmgr non-interactively, see
-/// [PodepmgrRunner.runUnattended]
+/// [Runner.runUnattended]
 ///
 /// To get started, in a fresh instance, call [main] to run through the basic
 /// script.
@@ -32,8 +32,9 @@ class InteractiveCLI {
         env = selectEnvironment();
 
         if (env != null) {
+          await env.prepare();
           await selectAndRunPlugins();
-          var exitCode = await PodepmgrRunner.runEnvironment(env);
+          var exitCode = await Runner.runEnvironment(env);
           Logger.log("Environment exited with code: $exitCode", LogLevel.debug);
         }
       } while (env != null);

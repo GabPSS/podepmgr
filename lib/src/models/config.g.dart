@@ -16,7 +16,8 @@ Config _$ConfigFromJson(Map<String, dynamic> json) => Config()
   ..paths = (json['paths'] as List<dynamic>).map((e) => e as String).toList()
   ..rootPath = json['rootPath'] as String
   ..pluginsDir = json['pluginsDir'] as String
-  ..assetsDir = json['assetsDir'] as String;
+  ..assetsDir = json['assetsDir'] as String
+  ..textEditor = json['textEditor'] as String;
 
 Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'environments': instance.environments,
@@ -25,4 +26,5 @@ Map<String, dynamic> _$ConfigToJson(Config instance) => <String, dynamic>{
       'rootPath': instance.rootPath,
       'pluginsDir': instance.pluginsDir,
       'assetsDir': instance.assetsDir,
+      'textEditor': instance.textEditor,
     };

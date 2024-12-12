@@ -1,1 +1,1 @@
-const managerVersion = "1.0";
+const managerVersion = "0.0.1";

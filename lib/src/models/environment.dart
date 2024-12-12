@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:podepmgr/src/manager.dart';
 import 'package:podepmgr/src/models/config.dart';
+import 'package:podepmgr/src/runner.dart';
 
 import '../logger.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -30,12 +31,14 @@ class Environment {
   final bool absolute;
   @JsonKey(toJson: joinArgs)
   final List<String> args;
+  final List<int> requiredPlugins;
 
   Environment({
     required this.name,
     required this.absolute,
     required this.path,
     required String args,
+    required this.requiredPlugins,
   }) : args = args.split(' ');
 
   static String joinArgs(List<String> input) => input.join(" ");
@@ -60,6 +63,25 @@ class Environment {
     } catch (e) {
       Logger.log("Error while running program. $e", LogLevel.error);
       return null;
+    }
+  }
+
+  /// Removes a plugin from the list of required plugins and shifts all indices above it down by one.
+  void shiftPlugin(int index) {
+    Logger.log("Removing plugin from environment '$name'", LogLevel.debug);
+    for (var i = 0; i < requiredPlugins.length; i++) {
+      if (requiredPlugins[i] == index) {
+        requiredPlugins.removeAt(i--);
+      } else if (requiredPlugins[i] > index) {
+        requiredPlugins[i]--;
+      }
+    }
+  }
+
+  /// Runs all plugins specified in [requiredPlugins].
+  Future<void> prepare() async {
+    for (var pluginIndex in requiredPlugins) {
+      await Runner.runPluginAt(Manager.config.plugins, pluginIndex);
     }
   }
 
